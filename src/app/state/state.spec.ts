@@ -64,6 +64,15 @@ test('Sequence:RIGHT', t => {
     t.deepEqual(seq.next().value, P(0,2));
 });
 
+const TileValue = (t:Tile) => (t == null) ? null : ({
+        x: t.x,
+        y: t.y,
+        oldY: t.oldY,
+        oldX: t.oldX,
+        value: t.value,
+        state: t.state
+    })
+
 test('TileManager:getTileAt', t => {
     const tm = new TileManager([
         new Tile(P(1,1), 2),
@@ -77,9 +86,8 @@ test('TileManager:getTileAt', t => {
     t.falsy(tm.getTileAt(P(2,0)))
     t.falsy(tm.getTileAt(P(2,2)))
 
-    t.deepEqual(tm.getNextNeigbour(P(3,2), Direction.Left), new Tile(P(1,2),2));
+    t.deepEqual(TileValue(tm.getNextNeigbour(P(3,2), Direction.Left)), TileValue(new Tile(P(1,2),2)));
 });
-
 
 test('TileManager:getNextNeighbour', t => {
      const tm = TileManager.fromMatrix([
@@ -89,27 +97,11 @@ test('TileManager:getNextNeighbour', t => {
         [0,0,0,0]
     ])
 
-    t.deepEqual(tm.getNextNeigbour(P(3,0), Direction.Left), new Tile(P(1,0), 4))
-    t.deepEqual(tm.getNextNeigbour(P(3,2), Direction.Left), new Tile(P(1,2),2));
-    t.deepEqual(tm.getNextNeigbour(P(2,3), Direction.Top), new Tile(P(2,1),2));
-    t.falsy(tm.getNeighbour(P(1,3), Direction.Left));
+    t.deepEqual(TileValue(tm.getNextNeigbour(P(3,0), Direction.Left)), TileValue(new Tile(P(1,0), 4)))
+    t.deepEqual(TileValue(tm.getNextNeigbour(P(3,2), Direction.Left)), TileValue(new Tile(P(1,2),2)));
+    t.deepEqual(TileValue(tm.getNextNeigbour(P(2,3), Direction.Top)), TileValue(new Tile(P(2,1),2)));
+    t.falsy(TileValue(tm.getNeighbour(P(1,3), Direction.Left)));
 });
-
-/*
-test('TileManager:reduceRow 1', t => {
-    const tm = new TileManager([
-        new Tile(P(1,0), 4),
-        new Tile(P(1,3), 4),
-        new Tile(P(1,1), 2),
-        new Tile(P(2,1), 2),
-        new Tile(P(1,2), 2),
-    ], 4);
-    console.log('Before', tm.toString());
-    tm.reduceRow(Direction.Right);
-    console.log('After', tm.toString());
-    console.log(tm.tiles);
-});
-*/
 
 function ReducerMacro(t:ContextualTestContext, dir:Direction, input:number[][], expected:number[][]) {
     const tm = TileManager.fromMatrix(input);

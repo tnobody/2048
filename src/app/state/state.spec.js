@@ -55,6 +55,14 @@ ava_1.default('Sequence:RIGHT', t => {
     t.deepEqual(seq.next().value, Sequences_1.P(1, 2));
     t.deepEqual(seq.next().value, Sequences_1.P(0, 2));
 });
+const TileValue = (t) => (t == null) ? null : ({
+    x: t.x,
+    y: t.y,
+    oldY: t.oldY,
+    oldX: t.oldX,
+    value: t.value,
+    state: t.state
+});
 ava_1.default('TileManager:getTileAt', t => {
     const tm = new TileManager_1.TileManager([
         new Tile_1.Tile(Sequences_1.P(1, 1), 2),
@@ -67,7 +75,7 @@ ava_1.default('TileManager:getTileAt', t => {
     t.falsy(tm.getTileAt(Sequences_1.P(0, 2)));
     t.falsy(tm.getTileAt(Sequences_1.P(2, 0)));
     t.falsy(tm.getTileAt(Sequences_1.P(2, 2)));
-    t.deepEqual(tm.getNextNeigbour(Sequences_1.P(3, 2), Sequences_1.Direction.Left), new Tile_1.Tile(Sequences_1.P(1, 2), 2));
+    t.deepEqual(TileValue(tm.getNextNeigbour(Sequences_1.P(3, 2), Sequences_1.Direction.Left)), TileValue(new Tile_1.Tile(Sequences_1.P(1, 2), 2)));
 });
 ava_1.default('TileManager:getNextNeighbour', t => {
     const tm = TileManager_1.TileManager.fromMatrix([
@@ -76,26 +84,11 @@ ava_1.default('TileManager:getNextNeighbour', t => {
         [0, 2, 0, 0],
         [0, 0, 0, 0]
     ]);
-    t.deepEqual(tm.getNextNeigbour(Sequences_1.P(3, 0), Sequences_1.Direction.Left), new Tile_1.Tile(Sequences_1.P(1, 0), 4));
-    t.deepEqual(tm.getNextNeigbour(Sequences_1.P(3, 2), Sequences_1.Direction.Left), new Tile_1.Tile(Sequences_1.P(1, 2), 2));
-    t.deepEqual(tm.getNextNeigbour(Sequences_1.P(2, 3), Sequences_1.Direction.Top), new Tile_1.Tile(Sequences_1.P(2, 1), 2));
-    t.falsy(tm.getNeighbour(Sequences_1.P(1, 3), Sequences_1.Direction.Left));
+    t.deepEqual(TileValue(tm.getNextNeigbour(Sequences_1.P(3, 0), Sequences_1.Direction.Left)), TileValue(new Tile_1.Tile(Sequences_1.P(1, 0), 4)));
+    t.deepEqual(TileValue(tm.getNextNeigbour(Sequences_1.P(3, 2), Sequences_1.Direction.Left)), TileValue(new Tile_1.Tile(Sequences_1.P(1, 2), 2)));
+    t.deepEqual(TileValue(tm.getNextNeigbour(Sequences_1.P(2, 3), Sequences_1.Direction.Top)), TileValue(new Tile_1.Tile(Sequences_1.P(2, 1), 2)));
+    t.falsy(TileValue(tm.getNeighbour(Sequences_1.P(1, 3), Sequences_1.Direction.Left)));
 });
-/*
-test('TileManager:reduceRow 1', t => {
-    const tm = new TileManager([
-        new Tile(P(1,0), 4),
-        new Tile(P(1,3), 4),
-        new Tile(P(1,1), 2),
-        new Tile(P(2,1), 2),
-        new Tile(P(1,2), 2),
-    ], 4);
-    console.log('Before', tm.toString());
-    tm.reduceRow(Direction.Right);
-    console.log('After', tm.toString());
-    console.log(tm.tiles);
-});
-*/
 function ReducerMacro(t, dir, input, expected) {
     const tm = TileManager_1.TileManager.fromMatrix(input);
     console.log(`Input`, tm.toString());
