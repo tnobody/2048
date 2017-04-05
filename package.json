@@ -1,0 +1,54 @@
+{
+  "name": "2048",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:watch": "webpack --progress --colors --watch",
+    "build": "webpack --progress --colors",
+    "dev": "webpack-dev-server --progress --colors",
+    "start": "",
+    "test": "ava"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "color": "^1.0.3",
+    "react": "^15.4.2",
+    "react-addons": "^0.9.1-deprecated",
+    "react-addons-css-transition-group": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-motion": "^0.4.7",
+    "react-redux": "^5.0.3",
+    "redux-saga": "^0.14.3",
+    "styled-components": "^1.4.4"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.35",
+    "@types/color": "^1.0.0",
+    "@types/mocha": "^2.2.40",
+    "@types/react": "^15.0.16",
+    "@types/react-addons-css-transition-group": "^15.0.1",
+    "@types/react-dom": "^0.14.23",
+    "@types/react-motion": "0.0.21",
+    "@types/react-redux": "^4.4.37",
+    "@types/redux": "^3.6.0",
+    "@types/redux-saga": "^0.10.5",
+    "ava": "^0.18.2",
+    "awesome-typescript-loader": "^3.1.2",
+    "chai": "^3.5.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "i": "^0.3.5",
+    "mocha": "^3.2.0",
+    "npm": "^4.4.4",
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "ava": {
+    "files": [
+      "src/**/*.spec.js"
+    ]
+  }
+}
