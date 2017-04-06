@@ -22,7 +22,9 @@ after_script:
 - git init
 - /usr/local/heroku/bin/heroku git:remote -a consol-100000000000
 - git add .
+- git status
 - git commit -m "Deployment from `date`"
+- git status
 - echo "Host heroku.com" >> ~/.ssh/config
 - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
 - echo "   CheckHostIP no" >> ~/.ssh/config
