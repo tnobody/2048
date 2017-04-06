@@ -33,4 +33,4 @@ after_script:
 - echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
 - /usr/local/heroku/bin/heroku keys:clear
 - yes | /usr/local/heroku/bin/heroku keys:add
-- yes | git push heroku master
+- yes | git push heroku master --force
