@@ -17,7 +17,6 @@ after_script:
 - echo "machine git.heroku.com" >> ~/.netrc
 - echo "  login $HEROKU_USER" >> ~/.netrc
 - echo "  password $HEROKU_API_KEY" >> ~/.netrc
-- /usr/local/heroku/bin/heroku login
 - cd dist/
 - git init
 - /usr/local/heroku/bin/heroku git:remote -a consol-100000000000
