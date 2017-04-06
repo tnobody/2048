@@ -1,36 +1,37 @@
 import {createStore} from 'redux'
 import {gamereducer} from './gamereducer';
+import * as  actions from "./actions";
+
+export interface GameState {
+    size: number,
+    spawnsLeft: number,
+    tiles: any[],
+    gameover: boolean,
+    score: number
+}
 
 export interface AppState {
-    game: {
-        size:number,
-        values: number[][]
-        state:string,
-        spawnsLeft:number,
-        tiles:any[]
-    }
+    game: GameState,
+    lastGameState:GameState
+
 }
 
 const size = 4;
-const values = [];
-for(let i = 0; i < size; i++) {
-    values.push([])
-    for(let j = 0; j < size; j++) {
-        values[i].push(0);
-    }
-}
 
-export const AppStateInit:AppState = {
+export const AppStateInit: AppState = {
     game: {
         size,
-        values,
-        spawnsLeft:0,
-        state: "IDLE",
-        tiles:[]
-    }
+        spawnsLeft: 0,
+        tiles: [],
+        gameover: false,
+        score: 0
+    },
+    lastGameState: null
 }
 
+declare const window:any;
 export const store = createStore<AppState>(
     gamereducer,
-    AppStateInit
-)
+    AppStateInit,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);

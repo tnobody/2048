@@ -25,8 +25,8 @@ export const Values = styled(
                     transitionName="valueAnimation"
                     transitionAppear={true}
                     transitionAppearTimeout={500}
-                    transitionEnterTimeout={350}
-                    transitionLeaveTimeout={250}
+                    transitionEnterTimeout={150}
+                    transitionLeaveTimeout={100}
                 >
                     {p.tiles.map((v, i) => <div key={v.id} ><Value size={p.size} tile={v}/></div>)}
                 </ReactCSSTransitionGroup>

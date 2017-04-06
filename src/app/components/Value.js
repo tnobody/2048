@@ -2,17 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const styled_components_1 = require("styled-components");
+const utils_1 = require("./../utils");
 const styled_components_2 = require("styled-components");
 const styled_components_3 = require("styled-components");
 const Sequences_1 = require("../state/Sequences");
 const react_motion_1 = require("react-motion");
-const leftPad = (s, padding, padder = '0') => {
-    const l = s.length;
-    for (let i = 0; i < padding - l; i++) {
-        s = `${padder}${s}`;
-    }
-    return s;
-};
 const popout = styled_components_2.keyframes `
     0% {
         transform: scale(0,0);
@@ -50,15 +44,17 @@ function getStyle(byState, p) {
     return '';
 }
 exports.Value = styled_components_1.default((p) => {
-    const v = leftPad(p.tile.value.toString(2), 16);
+    const v = utils_1.leftPad(p.tile.value.toString(2), 16);
     const vparts = [];
     for (let i = 0; i < v.length; i += 4) {
         vparts.push(v.substring(i, i + 4));
     }
     //const valueOut = vparts.map((v,i) => <div key={i}>{v}</div>)
     const valueOut = p.tile.value;
-    const springOPts = { stiffness: 300, damping: 40 };
-    return (React.createElement(react_motion_1.Motion, { style: { x: react_motion_1.spring((400 / 4) * p.tile.x), y: react_motion_1.spring((400 / 4) * p.tile.y) } }, ({ x, y }) => (React.createElement("div", { className: p.className, style: { transform: `translate(${x}px, ${y}px` } }, valueOut))));
+    const springOpts = { stiffness: 300, damping: 40 };
+    const defP = Sequences_1.P((400 / 4) * (p.tile.oldX || p.tile.x), (400 / 4) * (p.tile.oldY || p.tile.y));
+    const destP = { x: react_motion_1.spring((400 / 4) * (p.tile.x)), y: react_motion_1.spring((400 / 4) * (p.tile.y)) };
+    return (React.createElement(react_motion_1.Motion, { defaultStyle: defP, style: destP }, ({ x, y }) => (React.createElement("div", { className: p.className, style: { transform: `translate(${x}px, ${y}px` } }, valueOut))));
 }) `
     display:flex;
     flex-direction: column;
@@ -69,7 +65,7 @@ exports.Value = styled_components_1.default((p) => {
     ${p => p.theme.basicFont}
     justify-content: center;    
     color: ${(p) => p.theme.backgrounds[p.tile.value]}
-    border: 1px dashed ${p => p.theme.color};
+    border: 1px dashed ${p => p.theme.highlightColor};
     top:0;
     left: 0;
     position:absolute;    

@@ -8,7 +8,8 @@ export interface ITheme {
     margin:number;
     width:number;
     height:number;
-    color:string;
+    highlightColor:string;
+    highlightColor2:string;
     backgrounds:{[value:number]:string}
 }
 
@@ -18,10 +19,12 @@ export type ThemeProps = {
 
 export const Theme:ITheme = {
     background: '#151515',
-    color: '#fecc00',
+    highlightColor: '#fecc00',
+    highlightColor2: '#159700',
     basicFont: css`
         color: #828282;
-        font-family: courier, monospace
+        font-family: courier, monospace;
+        font-size: 20px;
     `,
     emptyValue: '#151515',
     backgrounds: {

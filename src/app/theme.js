@@ -4,10 +4,12 @@ const styled_components_1 = require("styled-components");
 const Color = require("color");
 exports.Theme = {
     background: '#151515',
-    color: '#fecc00',
+    highlightColor: '#fecc00',
+    highlightColor2: '#159700',
     basicFont: styled_components_1.css `
         color: #828282;
-        font-family: courier, monospace
+        font-family: courier, monospace;
+        font-size: 20px;
     `,
     emptyValue: '#151515',
     backgrounds: {

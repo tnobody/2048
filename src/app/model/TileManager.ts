@@ -68,7 +68,7 @@ export class TileManager {
             [Direction.Top]: Direction.Bottom,
         }
         const oDirection = dirMap[direction];
-        console.log(`${DirectionToString(direction)} -> ${DirectionToString(oDirection)}`);
+        let score = 0;
         for (let p of MatrixSequence(this.size, direction)) {
             let c = this.getTileAt(p);
             let nn = this.getNextNeigbour(p, oDirection);
@@ -87,15 +87,40 @@ export class TileManager {
                 nn = this.getNextNeigbour(p, oDirection);
             }
             if (nn && c && nn.value === c.value) {
-                this.merge(c, nn)
+                score += this.merge(nn, c)
             }
         }
+        return score;
     }
 
-    merge(tileA: Tile, tileB: Tile) {
-        tileA.value += tileB.value;
-        tileA.state = "MERGED";
-        this._tiles = this._tiles.filter(t => t !== tileB);
+    didMove() {
+        return this._tiles.find(t => t.state === 'MOVED' || t.state === 'MERGED') != null;
+    }
+
+    gameOver() {
+        if(this._tiles.length !== this.size*this.size) {
+            return false;
+        } else {
+            for(let p of MatrixSequence(this.size)) {
+                const c = this.getTileAt(p)
+                for(let dir of [Direction.Top, Direction.Bottom, Direction.Left, Direction.Right]) {
+                    const n = this.getNeighbour(p, dir);
+                    if(n && n.value === c.value) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    merge(from: Tile, into: Tile) {
+        from.value += into.value;
+        from.state = "MERGED";
+        from.x = into.x;
+        from.y = into.y;
+        this._tiles = this._tiles.filter(t => t !== into);
+        return from.value;
     }
 
     get tiles() {

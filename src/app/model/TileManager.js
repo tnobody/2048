@@ -58,7 +58,7 @@ class TileManager {
             [Sequences_1.Direction.Top]: Sequences_1.Direction.Bottom,
         };
         const oDirection = dirMap[direction];
-        console.log(`${Sequences_1.DirectionToString(direction)} -> ${Sequences_1.DirectionToString(oDirection)}`);
+        let score = 0;
         for (let p of Sequences_1.MatrixSequence(this.size, direction)) {
             let c = this.getTileAt(p);
             let nn = this.getNextNeigbour(p, oDirection);
@@ -77,14 +77,38 @@ class TileManager {
                 nn = this.getNextNeigbour(p, oDirection);
             }
             if (nn && c && nn.value === c.value) {
-                this.merge(c, nn);
+                score += this.merge(nn, c);
             }
         }
+        return score;
     }
-    merge(tileA, tileB) {
-        tileA.value += tileB.value;
-        tileA.state = "MERGED";
-        this._tiles = this._tiles.filter(t => t !== tileB);
+    didMove() {
+        return this._tiles.find(t => t.state === 'MOVED' || t.state === 'MERGED') != null;
+    }
+    gameOver() {
+        if (this._tiles.length !== this.size * this.size) {
+            return false;
+        }
+        else {
+            for (let p of Sequences_1.MatrixSequence(this.size)) {
+                const c = this.getTileAt(p);
+                for (let dir of [Sequences_1.Direction.Top, Sequences_1.Direction.Bottom, Sequences_1.Direction.Left, Sequences_1.Direction.Right]) {
+                    const n = this.getNeighbour(p, dir);
+                    if (n && n.value === c.value) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    merge(from, into) {
+        from.value += into.value;
+        from.state = "MERGED";
+        from.x = into.x;
+        from.y = into.y;
+        this._tiles = this._tiles.filter(t => t !== into);
+        return from.value;
     }
     get tiles() {
         return [...this._tiles.map(t => (Object.assign({}, t)))];

@@ -19,30 +19,43 @@ export const gamereducer = (state: AppState, action: Action&any): AppState => {
         case 'MOVE_DOWN':
         case 'MOVE_LEFT':
         case 'MOVE_RIGHT': {
-            tileManager.reduceRow(DirMap[type]);
-            const inGame = true;
-            if(inGame) {
-                return gamereducer({...state, game: {...state.game, tiles:tileManager.tiles}}, {
-                    type: 'SPAWN',
-                    spawnPoints: action.spawnPoints || []
-                } as any);
-            } else {
-                return {...state};
-            }
+            const score = tileManager.reduceRow(DirMap[type]);
+            return gamereducer({
+                ...state, game: {
+                    ...state.game,
+                    tiles: tileManager.tiles,
+                    gameover: tileManager.gameOver(),
+                    score: state.game.score + score
+                }, lastGameState: {...state.game, spawnsLeft: 0}
+            }, {
+                type: 'SPAWN',
+                spawnPoints: tileManager.didMove() ? action.spawnPoints || [] : []
+            } as any);
         }
         case 'SPAWN': {
             const {size} = state.game;
             let spawnsLeft = action.spawnPoints.length;
-            action.spawnPoints.forEach(({x,y}) => {
-                if(!tileManager.hasTileAt(P(x,y))) {
-                    tileManager.add(new Tile(P(x,y),2))
+            action.spawnPoints.forEach(tile => {
+                if (!tileManager.hasTileAt(tile)) {
+                    tileManager.add(tile)
                     spawnsLeft--;
                 }
-                if(tileManager.tiles.length === size*size) {
+                if (tileManager.tiles.length === size * size) {
                     spawnsLeft = 0;
                 }
             });
             return {...state, game: {...state.game, spawnsLeft, tiles: tileManager.tiles}}
+        }
+        case 'RESET': {
+            return {...state, game: {...state.game, tiles: [], gameover: false, score: 0}, lastGameState: null}
+        }
+
+        case 'Undo': {
+            if (state.lastGameState) {
+                return {...state, game: {...state.lastGameState}, lastGameState: null}
+            } else {
+                return state;
+            }
         }
     }
     return state;

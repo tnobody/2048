@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components';
-import {Attributes} from './../utils'
+import {Attributes, leftPad} from './../utils'
 import {Tile, TileState} from "../model/Tile";
 import {connect} from "react-redux";
 import {AppState} from "../state/store";
@@ -8,14 +8,6 @@ import {keyframes} from "styled-components";
 import {css} from "styled-components";
 import {Point, P} from "../state/Sequences";
 import {Motion, spring} from "react-motion";
-
-const leftPad = (s: string, padding: number, padder: string = '0') => {
-    const l = s.length;
-    for (let i = 0; i < padding - l; i++) {
-        s = `${padder}${s}`;
-    }
-    return s;
-}
 
 const popout = keyframes`
     0% {
@@ -69,9 +61,11 @@ export const Value = styled((p: ValueProps) => {
     }
     //const valueOut = vparts.map((v,i) => <div key={i}>{v}</div>)
     const valueOut = p.tile.value;
-    const springOPts=  {stiffness:300, damping:40};
+    const springOpts=  {stiffness:300, damping:40};
+    const defP = P((400 / 4) * (p.tile.oldX || p.tile.x),(400 / 4) * (p.tile.oldY || p.tile.y));
+    const destP = {x: spring((400 / 4) * (p.tile.x)), y: spring((400 / 4) * (p.tile.y))};
     return (
-        <Motion style={{x: spring((400 / 4) * p.tile.x), y: spring((400 / 4) * p.tile.y)}}>
+        <Motion defaultStyle={defP}  style={destP}>
             {({x,y}) => (
                 <div className={p.className} style={{transform:`translate(${x}px, ${y}px`}}>{valueOut}</div>
             )}
@@ -86,7 +80,7 @@ export const Value = styled((p: ValueProps) => {
     ${p => p.theme.basicFont}
     justify-content: center;    
     color: ${(p: any) => p.theme.backgrounds[p.tile.value] }
-    border: 1px dashed ${p => p.theme.color};
+    border: 1px dashed ${p => p.theme.highlightColor};
     top:0;
     left: 0;
     position:absolute;    
