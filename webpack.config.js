@@ -1,4 +1,5 @@
-const  webpack = require('webpack')
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
 // Enable sourcemaps for debugging webpack's output.
@@ -14,17 +15,22 @@ const baseConfig = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {test: /\.tsx?$/, loader: "awesome-typescript-loader"}
         ]
-    }
+    },
+    plugins: [
+        new CopyWebpackPlugin([
+            {context: 'src/', from: '**/*.json'}
+        ])
+    ]
 }
-const mergeArray = function(a1,a2) {
+const mergeArray = function (a1, a2) {
     return [...a1, ...a2]
 }
-const merge = function(base, extension) {
-    for(let prop in extension) {
-        if(extension.hasOwnProperty(prop)) {
-            switch(typeof base[prop]) {
+const merge = function (base, extension) {
+    for (let prop in extension) {
+        if (extension.hasOwnProperty(prop)) {
+            switch (typeof base[prop]) {
                 case 'object':
-                    if(Array.isArray(base[prop])) {
+                    if (Array.isArray(base[prop])) {
                         base[prop] = mergeArray(base[prop], extension[prop])
                     } else {
                         base[prop] = merge(base[prop], extension[prop])
@@ -38,8 +44,8 @@ const merge = function(base, extension) {
     return base;
 }
 
-const mergeConf = function(extension) {
+const mergeConf = function (extension) {
     return merge(baseConfig, extension);
 }
 
-module.exports = { baseConfig, mergeConf }
+module.exports = {baseConfig, mergeConf}

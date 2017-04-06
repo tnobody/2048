@@ -1,0 +1,6 @@
+{
+  "name": "consol-100000000000",
+  "scripts": {
+    "start": "node server.bundle"
+  }
+}

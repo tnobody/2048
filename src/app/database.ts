@@ -1,15 +1,21 @@
 import {Pool} from "pg";
 import * as url from 'url';
 
-const params = url.parse(process.env.DATABASE_URL);
-const auth = params.auth.split(':');
+const params = url.parse(process.env.DATABASE_URL || 'localhost:5432');
+let credentials = {};
+if(params.auth) {
+    const auth = params.auth.split(':');
+    credentials = {
+        user: auth[0],
+        password: auth[1],
+    }
+}
 
 const config = {
-    user: auth[0],
-    password: auth[1],
+    ...credentials,
     host: params.hostname,
     port: Number(params.port),
-    database: params.pathname.split('/')[1],
+    database: (params.pathname) ? params.pathname.split('/')[1] : 'postgres',
     ssl: true
 };
 
