@@ -8,5 +8,8 @@
         "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
+    },
+    "awesomeTypescriptLoaderOptions": {
+        "transpileOnly": true
     }
 }

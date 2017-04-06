@@ -2,12 +2,13 @@ import * as express from 'express';
 import {initDataBase, DatabasePool} from "./database";
 import {IHighScoreService} from "./service/IHighScoreService";
 import {ServerHighScoreService} from "./service/ServerHighScoreService";
+import * as bodyParser from 'body-parser';
 
 const PORT = process.env.PORT || 3434;
 
 const app = express();
-console.log('Dir', __dirname, process.cwd());
 app.use(express.static(process.cwd()));
+app.use(bodyParser.json())
 
 process.on('unhandledRejection', function (e) {
     console.log(e.message, e.stack)
@@ -15,14 +16,17 @@ process.on('unhandledRejection', function (e) {
 
 const highScoreService:IHighScoreService = new ServerHighScoreService(DatabasePool);
 
-app.get('highscore', (req, res) => {
+app.get('/highscore', (req, res:express.Response) => {
     highScoreService.get(10).then(hs => {
-        res.send();
+        res.status(200).send(hs);
+    }, err => {
+        console.error(err);
+        res.status(500).send(err)
     })
 });
 
-app.put('highscore', (req, res) => {
-    highScoreService.add(JSON.parse(req.body)).then(hs => res.send(hs));
+app.put('/highscore', (req, res) => {
+    highScoreService.add(req.body).then(hs => res.send(hs));
 })
 
 console.log('Init Database')
