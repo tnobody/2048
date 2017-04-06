@@ -19,6 +19,8 @@ after_script:
 - echo "  password $HEROKU_API_KEY" >> ~/.netrc
 - cd dist/
 - ls -rtl
+- git config --global user.email $HEROKU_USER
+- git config --global user.name "Travis the Integrator"
 - git init
 - /usr/local/heroku/bin/heroku git:remote -a consol-100000000000
 - git add .
