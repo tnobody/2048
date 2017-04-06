@@ -7,6 +7,7 @@ const styled_components_2 = require("styled-components");
 const styled_components_3 = require("styled-components");
 const Sequences_1 = require("../state/Sequences");
 const react_motion_1 = require("react-motion");
+const theme_1 = require("../theme");
 const popout = styled_components_2.keyframes `
     0% {
         transform: scale(0,0);
@@ -52,8 +53,8 @@ exports.Value = styled_components_1.default((p) => {
     //const valueOut = vparts.map((v,i) => <div key={i}>{v}</div>)
     const valueOut = p.tile.value;
     const springOpts = { stiffness: 300, damping: 40 };
-    const defP = Sequences_1.P((400 / 4) * (p.tile.oldX || p.tile.x), (400 / 4) * (p.tile.oldY || p.tile.y));
-    const destP = { x: react_motion_1.spring((400 / 4) * (p.tile.x)), y: react_motion_1.spring((400 / 4) * (p.tile.y)) };
+    const defP = Sequences_1.P((theme_1.Theme.width / 4) * (p.tile.oldX || p.tile.x), (theme_1.Theme.height / 4) * (p.tile.oldY || p.tile.y));
+    const destP = { x: react_motion_1.spring((theme_1.Theme.width / 4) * (p.tile.x)), y: react_motion_1.spring((theme_1.Theme.height / 4) * (p.tile.y)) };
     return (React.createElement(react_motion_1.Motion, { defaultStyle: defP, style: destP }, ({ x, y }) => (React.createElement("div", { className: p.className, style: { transform: `translate(${x}px, ${y}px` } }, valueOut))));
 }) `
     display:flex;

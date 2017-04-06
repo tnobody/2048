@@ -8,6 +8,7 @@ import {keyframes} from "styled-components";
 import {css} from "styled-components";
 import {Point, P} from "../state/Sequences";
 import {Motion, spring} from "react-motion";
+import {Theme} from "../theme";
 
 const popout = keyframes`
     0% {
@@ -62,8 +63,8 @@ export const Value = styled((p: ValueProps) => {
     //const valueOut = vparts.map((v,i) => <div key={i}>{v}</div>)
     const valueOut = p.tile.value;
     const springOpts=  {stiffness:300, damping:40};
-    const defP = P((400 / 4) * (p.tile.oldX || p.tile.x),(400 / 4) * (p.tile.oldY || p.tile.y));
-    const destP = {x: spring((400 / 4) * (p.tile.x)), y: spring((400 / 4) * (p.tile.y))};
+    const defP = P((Theme.width / 4) * (p.tile.oldX || p.tile.x),(Theme.height / 4) * (p.tile.oldY || p.tile.y));
+    const destP = {x: spring((Theme.width / 4) * (p.tile.x)), y: spring((Theme.height / 4) * (p.tile.y))};
     return (
         <Motion defaultStyle={defP}  style={destP}>
             {({x,y}) => (

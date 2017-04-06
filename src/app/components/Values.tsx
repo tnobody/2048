@@ -5,6 +5,7 @@ import {Value} from './Value';
 import {AppState} from './../state/store';
 import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import {Tile} from "../model/Tile";
+import {media} from "../theme";
 
 type ValuesProps = {tiles: Tile[]}&React.HTMLAttributes<any>
 export const Values = styled(
@@ -36,7 +37,21 @@ export const Values = styled(
     display: flex;
     flex-wrap: wrap;
     position:relative;
-    height:${p => p.theme.height}px;
-    width:${p => p.theme.width}px;
+    ${ media.xs`
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${ media.xs`
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${ media.xs`
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${ media.xs`
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
     padding: ${p => p.theme.margin}px
 `;

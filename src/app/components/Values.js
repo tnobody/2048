@@ -5,6 +5,7 @@ const styled_components_1 = require("styled-components");
 const react_redux_1 = require("react-redux");
 const Value_1 = require("./Value");
 const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+const theme_1 = require("../theme");
 exports.Values = styled_components_1.default(react_redux_1.connect((s) => ({
     tiles: s.game.tiles,
     size: s.game.size
@@ -17,7 +18,21 @@ exports.Values = styled_components_1.default(react_redux_1.connect((s) => ({
     display: flex;
     flex-wrap: wrap;
     position:relative;
-    height:${p => p.theme.height}px;
-    width:${p => p.theme.width}px;
+    ${theme_1.media.xs `
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${theme_1.media.xs `
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${theme_1.media.xs `
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
+    ${theme_1.media.xs `
+        height:${p => p.theme.height}px;
+        width:${p => p.theme.width}px;
+    `}
     padding: ${p => p.theme.margin}px
 `;

@@ -9,6 +9,7 @@ import {MoveLeft, MoveUp, MoveRight, MoveDown, Spawn, MoveByKeyboardCode, Undo, 
 import {Score} from "./Score";
 import {MonoButton} from "./MonoButton";
 import {GameOver} from "./GameOver";
+import * as Swipeable from 'react-swipeable';
 
 type AppProps = Attributes<{}>;
 
@@ -32,7 +33,7 @@ export const App = styled(
                     break;
                 case 85:
                     this.undo();
-                    break; 
+                    break;
             }
 
         },
@@ -45,15 +46,30 @@ export const App = styled(
         }
     }))
     (p => {
-        const content = p.gameover ? <GameOver /> : <Values />
+            document.addEventListener("keypress", (e) => {
+                console.log('Pressed global', e.which);
+            })
+            const content = p.gameover ? <GameOver /> : <Values />;
             return (
-                <div autoFocus={true} className={(p as AppProps).className} onKeyUp={e => !p.gameover ? p.handleMove(e.which) : ''}>
-                    <Flex justifyContent="space-around">
-                        <MonoButton onClick={e => p.restart()}>[<Highlight>R</Highlight>] Restart</MonoButton>
-                        <MonoButton disabled={p.gameover} onClick={e => !p.gameover ? p.undo() : ''}>[<Highlight>U</Highlight>] Undo</MonoButton>
-                        <Score></Score>
-                    </Flex>
-                    <Flex justifyContent="center">{content}</Flex>
+                <div
+                    tabIndex={1}
+                    autoFocus={true}
+                    className={(p as AppProps).className}
+                    onKeyDown={e => !p.gameover ? p.handleMove(e.which) : ''}
+                >
+                    <Swipeable
+                        onSwipedUp={e => !p.gameover ? p.handleMove(38) : ''}
+                        onSwipedRight={e => !p.gameover ? p.handleMove(39) : ''}
+                        onSwipedDown={e => !p.gameover ? p.handleMove(40) : ''}
+                        onSwipedLeft={e => !p.gameover ? p.handleMove(37) : ''}>
+                        <Flex justifyContent="space-around">
+                            <MonoButton onClick={e => p.restart()}>[<Highlight>R</Highlight>] Restart</MonoButton>
+                            <MonoButton disabled={p.gameover}
+                                        onClick={e => !p.gameover ? p.undo() : ''}>[<Highlight>U</Highlight>] Undo</MonoButton>
+                            <Score></Score>
+                        </Flex>
+                        <Flex justifyContent="center">{content}</Flex>
+                    </Swipeable>
                 </div>
             )
         }

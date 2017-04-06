@@ -10,6 +10,7 @@ const actions_1 = require("../state/actions");
 const Score_1 = require("./Score");
 const MonoButton_1 = require("./MonoButton");
 const GameOver_1 = require("./GameOver");
+const Swipeable = require("react-swipeable");
 store_1.store.dispatch(actions_1.Spawn(2));
 exports.App = styled_components_1.default(react_redux_1.connect((s) => ({
     gameover: s.game.gameover
@@ -38,19 +39,23 @@ exports.App = styled_components_1.default(react_redux_1.connect((s) => ({
         dispatch(actions_1.Undo());
     }
 }))(p => {
+    document.addEventListener("keypress", (e) => {
+        console.log('Pressed global', e.which);
+    });
     const content = p.gameover ? React.createElement(GameOver_1.GameOver, null) : React.createElement(Values_1.Values, null);
-    return (React.createElement("div", { autoFocus: true, className: p.className, onKeyUp: e => !p.gameover ? p.handleMove(e.which) : '' },
-        React.createElement(utils_1.Flex, { justifyContent: "space-around" },
-            React.createElement(MonoButton_1.MonoButton, { onClick: e => p.restart() },
-                "[",
-                React.createElement(utils_1.Highlight, null, "R"),
-                "] Restart"),
-            React.createElement(MonoButton_1.MonoButton, { disabled: p.gameover, onClick: e => !p.gameover ? p.undo() : '' },
-                "[",
-                React.createElement(utils_1.Highlight, null, "U"),
-                "] Undo"),
-            React.createElement(Score_1.Score, null)),
-        React.createElement(utils_1.Flex, { justifyContent: "center" }, content)));
+    return (React.createElement("div", { tabIndex: 1, autoFocus: true, className: p.className, onKeyDown: e => !p.gameover ? p.handleMove(e.which) : '' },
+        React.createElement(Swipeable, { onSwipedUp: e => !p.gameover ? p.handleMove(38) : '', onSwipedRight: e => !p.gameover ? p.handleMove(39) : '', onSwipedDown: e => !p.gameover ? p.handleMove(40) : '', onSwipedLeft: e => !p.gameover ? p.handleMove(37) : '' },
+            React.createElement(utils_1.Flex, { justifyContent: "space-around" },
+                React.createElement(MonoButton_1.MonoButton, { onClick: e => p.restart() },
+                    "[",
+                    React.createElement(utils_1.Highlight, null, "R"),
+                    "] Restart"),
+                React.createElement(MonoButton_1.MonoButton, { disabled: p.gameover, onClick: e => !p.gameover ? p.undo() : '' },
+                    "[",
+                    React.createElement(utils_1.Highlight, null, "U"),
+                    "] Undo"),
+                React.createElement(Score_1.Score, null)),
+            React.createElement(utils_1.Flex, { justifyContent: "center" }, content))));
 })) `
     background: ${p => p.theme.background};   
     outline: none;
