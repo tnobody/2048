@@ -11,6 +11,7 @@ before_script:
 script:
   - npm run build
 after_script:
+  - heroku login
   - cd dist/
   - git init
   - git config user.name "travis the integrator"
