@@ -10,7 +10,8 @@ after_script:
   - gem install heroku
   - cd dist/
   - git init
-  - git remote add heroku git.heroku.com/consol-100000000000.git
+  - git config user.name "travis the integrator"
+  - git remote add heroku https://git.heroku.com/consol-100000000000.git
   - git add .
   - git commit -m "Deployment from `date`"
   - echo "Host heroku.com" >> ~/.ssh/config
