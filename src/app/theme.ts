@@ -18,7 +18,7 @@ export type ThemeProps = {
 }
 
 export const Theme: ITheme = {
-    background: '#151515',
+    background: 'white', // #151515
     highlightColor: '#fecc00',
     highlightColor2: '#159700',
     basicFont: css`
